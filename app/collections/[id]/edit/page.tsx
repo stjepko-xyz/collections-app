@@ -13,6 +13,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   return (
     <main className="">
       <div className="header flex justify-end gap-2">
+        {/* TO-DO: Make client side actions component: Cancel, Save, Remove */}
         <Button variant={"ghost"} asChild>
           <Link href={`/collections/${id}`}>Cancel</Link>
         </Button>
