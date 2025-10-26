@@ -27,7 +27,7 @@ export default async function Page({ params }: { params: { id: string } }) {
           onDelete={deleteCollection}
         />
       </div>
-      <CollectionsForm data={collection.data} id={"edit-collection-form"} />
+      <CollectionsForm data={collection.data} formId={"edit-collection-form"} />
     </main>
   );
 }

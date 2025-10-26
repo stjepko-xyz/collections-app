@@ -36,7 +36,7 @@ const useFormContext = () => {
 };
 
 const Form = ({ children, value }) => {
-  const { id, fields, onSubmit, schema } = value;
+  const { formId, fields, onSubmit, schema } = value;
 
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
@@ -44,8 +44,8 @@ const Form = ({ children, value }) => {
   });
 
   return (
-    <FormContext.Provider value={{ id, fields, onSubmit, schema, form }}>
-      <form id={id} onSubmit={form.handleSubmit(onSubmit)}>
+    <FormContext.Provider value={{ formId, fields, onSubmit, schema, form }}>
+      <form id={formId} onSubmit={form.handleSubmit(onSubmit)}>
         {children}
       </form>
     </FormContext.Provider>

@@ -13,7 +13,7 @@ export default function Page() {
           Save
         </Button>
       </div>
-      <CollectionsForm id="new-collection-form" />
+      <CollectionsForm formId="new-collection-form" />
     </main>
   );
 }

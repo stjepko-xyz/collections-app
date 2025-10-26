@@ -11,29 +11,37 @@ import {
   FieldGroup,
 } from "@/components/ui/field";
 
-const CollectionsForm = ({ id }: { id?: number }) => {
+const CollectionsForm = ({ formId, data }: { formId: string; data?: any }) => {
   const router = useRouter();
   const fields = {
-    name: "",
-    description: "",
-    category: "",
-    tags: [] as string[],
+    name: data?.name || "",
+    description: data?.description || "",
+    category: data?.category || "",
+    tags: data?.tags || [],
   };
 
-  const onSubmit = async (data: z.infer<typeof insertCollectionSchema>) => {
-    console.log(data);
-    const result = await createCollection(data);
+  const onSubmit = async (formData: z.infer<typeof insertCollectionSchema>) => {
+    if (data) {
+      const result = await updateCollection(data.id, formData);
 
-    if (result.success) {
-      // Success! Redirect to collections page
-      router.push("/collections");
+      if (result.success) {
+        router.push(`/collections/${data.id}`);
+      } else {
+        // Show error message
+      }
     } else {
-      // Show error message
+      const result = await createCollection(formData);
+
+      if (result.success) {
+        router.push("/collections");
+      } else {
+        // Show error message
+      }
     }
   };
 
   return (
-    <Form value={{ id, fields, onSubmit, schema: insertCollectionSchema }}>
+    <Form value={{ formId, fields, onSubmit, schema: insertCollectionSchema }}>
       <FieldSet>
         <FieldLegend>New collection</FieldLegend>
         <FieldDescription>
