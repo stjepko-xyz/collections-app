@@ -13,6 +13,7 @@ export type NewCollection = typeof collectionsTable.$inferInsert;
  * Create a new collection
  */
 export async function createCollection(data: NewCollection) {
+  console.log("Creating collection with data:", data);
   try {
     const [collection] = await db
       .insert(collectionsTable)
