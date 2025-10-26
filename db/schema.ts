@@ -1,4 +1,5 @@
 import { integer, pgTable, varchar } from "drizzle-orm/pg-core";
+import { relations } from "drizzle-orm";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -10,7 +11,6 @@ export const collectionsTable = pgTable("collections", {
   tags: varchar({ length: 255 }).array().notNull(),
 });
 
-// Generate base schema from Drizzle table and add custom validations
 export const insertCollectionSchema = createInsertSchema(collectionsTable, {
   name: z
     .string()
@@ -25,4 +25,35 @@ export const insertCollectionSchema = createInsertSchema(collectionsTable, {
     .array(z.string())
     .min(1, "At least one tag must be selected.")
     .max(5, "You can select up to 5 tags."),
+}).extend({
+  items: z
+    .array(
+      z.object({
+        name: z.string().min(1, "Item name is required"),
+      })
+    )
+    .optional()
+    .default([]),
 });
+
+export const itemsTable = pgTable("items", {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  collectionId: integer()
+    .notNull()
+    .references(() => collectionsTable.id, { onDelete: "cascade" }),
+  name: varchar({ length: 255 }).notNull(),
+});
+
+export const insertItemSchema = createInsertSchema(itemsTable);
+
+// Define relations
+export const collectionsRelations = relations(collectionsTable, ({ many }) => ({
+  items: many(itemsTable),
+}));
+
+export const itemsRelations = relations(itemsTable, ({ one }) => ({
+  collection: one(collectionsTable, {
+    fields: [itemsTable.collectionId],
+    references: [collectionsTable.id],
+  }),
+}));

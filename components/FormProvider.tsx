@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import {
@@ -24,6 +24,14 @@ import { Input } from "@/components/ui/input";
 import { on } from "events";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
+import {
+  InputGroup,
+  InputGroupInput,
+  InputGroupAddon,
+  InputGroupButton,
+} from "@/components/ui/input-group";
+import { Button } from "@/components/ui/button";
+import { XIcon } from "lucide-react";
 
 const FormContext = createContext(null);
 
@@ -182,9 +190,74 @@ const CheckboxField = ({ name, options }) => {
   );
 };
 
+const ArrayField = ({ name, placeholder, description }) => {
+  const { form } = useFormContext();
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: name,
+  });
+  return (
+    <FieldSet className="gap-4">
+      <FieldLegend variant="label">{name}</FieldLegend>
+      {description && <FieldDescription>{description}</FieldDescription>}
+      <FieldGroup className="gap-4">
+        {fields.map((field, index) => (
+          <Controller
+            key={field.id}
+            name={`${name}.${index}.name`}
+            control={form.control}
+            render={({ field: controllerField, fieldState }) => (
+              <Field orientation="horizontal" data-invalid={fieldState.invalid}>
+                <FieldContent>
+                  <InputGroup>
+                    <InputGroupInput
+                      {...controllerField}
+                      id={`${name}.${index}.name`}
+                      aria-invalid={fieldState.invalid}
+                      placeholder={placeholder || "Enter item name"}
+                      type="text"
+                      autoComplete="off"
+                    />
+                    {fields.length > 1 && (
+                      <InputGroupAddon align="inline-end">
+                        <InputGroupButton
+                          type="button"
+                          variant="ghost"
+                          size="icon-xs"
+                          onClick={() => remove(index)}
+                          aria-label={`Remove ${name} ${index + 1}`}
+                        >
+                          <XIcon />
+                        </InputGroupButton>
+                      </InputGroupAddon>
+                    )}
+                  </InputGroup>
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </FieldContent>
+              </Field>
+            )}
+          />
+        ))}
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={() => append({ name: "" })}
+          disabled={fields.length >= 5}
+        >
+          Add {name}
+        </Button>
+      </FieldGroup>
+    </FieldSet>
+  );
+};
+
 Form.InputField = InputField;
 Form.TextareaField = TextareaField;
 Form.SelectField = SelectField;
 Form.CheckboxField = CheckboxField;
+Form.ArrayField = ArrayField;
 
 export default Form;

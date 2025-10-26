@@ -18,9 +18,11 @@ const CollectionsForm = ({ formId, data }: { formId: string; data?: any }) => {
     description: data?.description || "",
     category: data?.category || "",
     tags: data?.tags || [],
+    items: data?.items || [],
   };
 
   const onSubmit = async (formData: z.infer<typeof insertCollectionSchema>) => {
+    console.log(formData);
     if (data) {
       const result = await updateCollection(data.id, formData);
 
@@ -76,6 +78,11 @@ const CollectionsForm = ({ formId, data }: { formId: string; data?: any }) => {
               { id: "sale", label: "Sale" },
               { id: "popular", label: "Popular" },
             ]}
+          />
+          <Form.ArrayField
+            name="items"
+            placeholder="Enter item name"
+            description="Add items to your collection (optional)"
           />
         </FieldGroup>
       </FieldSet>

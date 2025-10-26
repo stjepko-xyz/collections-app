@@ -23,4 +23,16 @@ export const columns: ColumnDef<Collection>[] = [
     accessorKey: "description",
     header: "Description",
   },
+  {
+    accessorKey: "category",
+    header: "Category",
+  },
+  {
+    accessorKey: "tags",
+    header: "Tags",
+  },
+  {
+    accessorKey: "items",
+    header: "Items",
+  },
 ];
