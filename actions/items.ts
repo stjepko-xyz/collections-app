@@ -2,8 +2,10 @@
 
 import { db } from "@/db/drizzle";
 import { itemsTable } from "@/db/schema";
+import { da } from "date-fns/locale";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { success } from "zod";
 
 export const createItem = async (data) => {
   try {
@@ -26,5 +28,19 @@ export const getItems = async () => {
   } catch (error) {
     console.error("Error fetching items:", error);
     return { success: false, error: "Failed to fetch items." };
+  }
+};
+
+export const getItemById = async (id) => {
+  try {
+    const [item] = await db
+      .select()
+      .from(itemsTable)
+      .where(eq(itemsTable.id, id));
+
+    return { success: true, data: item };
+  } catch (error) {
+    console.error("Error fetching item:", error);
+    return { success: false, error: "Failed to fetch item." };
   }
 };
