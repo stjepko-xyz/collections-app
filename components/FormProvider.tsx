@@ -202,75 +202,95 @@ const ArrayField = ({ name, placeholder, description, existingOptions }) => {
     control: form.control,
     name: name,
   });
+
+  // Get all currently selected item names
+  const selectedItemNames = fields
+    .map((field) => field.name?.trim().toLowerCase())
+    .filter(Boolean);
+
   return (
     <FieldSet className="gap-4">
       <FieldLegend variant="label">{name}</FieldLegend>
       {description && <FieldDescription>{description}</FieldDescription>}
       <FieldGroup className="gap-4">
-        {fields.map((field, index) => (
-          <Controller
-            key={field.id}
-            name={`${name}.${index}.name`}
-            control={form.control}
-            render={({ field: controllerField, fieldState }) => (
-              <Field orientation="horizontal" data-invalid={fieldState.invalid}>
-                <FieldContent>
-                  <InputGroup>
-                    <InputGroupInput
-                      {...controllerField}
-                      id={`${name}.${index}.name`}
-                      aria-invalid={fieldState.invalid}
-                      placeholder={placeholder || "Enter item name"}
-                      type="text"
-                      autoComplete="off"
-                    />
-                    <InputGroupAddon align="inline-end">
-                      {existingOptions && existingOptions.length > 0 && (
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <InputGroupButton
-                              variant="ghost"
-                              className="!pr-1.5 text-xs"
-                            >
-                              Select items
-                              <ChevronDownIcon className="size-3" />
-                            </InputGroupButton>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            {existingOptions.map((option) => (
-                              <DropdownMenuItem
-                                key={option.id}
-                                onSelect={() => {
-                                  controllerField.onChange(option.name);
-                                }}
+        {fields.map((field, index) => {
+          // Filter out already selected items for this specific field
+          const availableOptions =
+            existingOptions?.filter(
+              (option) =>
+                !selectedItemNames.includes(option.name.trim().toLowerCase()) ||
+                option.name.trim().toLowerCase() ===
+                  field.name?.trim().toLowerCase()
+            ) || [];
+
+          return (
+            <Controller
+              key={field.id}
+              name={`${name}.${index}.name`}
+              control={form.control}
+              render={({ field: controllerField, fieldState }) => (
+                <Field
+                  orientation="horizontal"
+                  data-invalid={fieldState.invalid}
+                >
+                  <FieldContent>
+                    <InputGroup>
+                      <InputGroupInput
+                        {...controllerField}
+                        id={`${name}.${index}.name`}
+                        aria-invalid={fieldState.invalid}
+                        placeholder={placeholder || "Enter item name"}
+                        type="text"
+                        autoComplete="off"
+                      />
+                      <InputGroupAddon align="inline-end">
+                        {availableOptions.length > 0 && (
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <InputGroupButton
+                                variant="ghost"
+                                className="!pr-1.5 text-xs"
                               >
-                                {option.name}
-                              </DropdownMenuItem>
-                            ))}
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      )}
-                      {fields.length > 1 && (
-                        <InputGroupButton
-                          type="button"
-                          variant="ghost"
-                          size="icon-xs"
-                          onClick={() => remove(index)}
-                          aria-label={`Remove ${name} ${index + 1}`}
-                        >
-                          <XIcon />
-                        </InputGroupButton>
-                      )}
-                    </InputGroupAddon>
-                  </InputGroup>
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </FieldContent>
-              </Field>
-            )}
-          />
-        ))}
+                                Select items
+                                <ChevronDownIcon className="size-3" />
+                              </InputGroupButton>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              {availableOptions.map((option) => (
+                                <DropdownMenuItem
+                                  key={option.id}
+                                  onSelect={() => {
+                                    controllerField.onChange(option.name);
+                                  }}
+                                >
+                                  {option.name}
+                                </DropdownMenuItem>
+                              ))}
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        )}
+                        {fields.length > 1 && (
+                          <InputGroupButton
+                            type="button"
+                            variant="ghost"
+                            size="icon-xs"
+                            onClick={() => remove(index)}
+                            aria-label={`Remove ${name} ${index + 1}`}
+                          >
+                            <XIcon />
+                          </InputGroupButton>
+                        )}
+                      </InputGroupAddon>
+                    </InputGroup>
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </FieldContent>
+                </Field>
+              )}
+            />
+          );
+        })}
         <Button
           type="button"
           variant="outline"

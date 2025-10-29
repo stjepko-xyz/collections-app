@@ -6,7 +6,7 @@ import {
   itemsTable,
   collectionsToItemsTable,
 } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { eq, inArray } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
 // Types
@@ -30,19 +30,25 @@ export async function createCollection(
         .values(collectionData)
         .returning();
 
-      // 2. Create items and link them to the collection
+      // 2. Create or find items and link them to the collection
       if (items && items.length > 0) {
         const validItems = items.filter((item) => item.name.trim() !== "");
 
         if (validItems.length > 0) {
-          // Insert items into itemsTable
-          const insertedItems = await tx
+          // Insert items, ignoring conflicts (duplicates)
+          await tx
             .insert(itemsTable)
             .values(validItems.map((item) => ({ name: item.name })))
-            .returning();
+            .onConflictDoNothing();
+
+          // Fetch all items by name to get their IDs
+          const itemNames = validItems.map((item) => item.name);
+          const itemRecords = await tx.query.itemsTable.findMany({
+            where: (items, { inArray }) => inArray(items.name, itemNames),
+          });
 
           // Create junction table entries to link collection with items
-          const junctionEntries = insertedItems.map((item) => ({
+          const junctionEntries = itemRecords.map((item) => ({
             collectionId: collection.id,
             itemId: item.id,
           }));
@@ -140,19 +146,25 @@ export async function updateCollection(
           .delete(collectionsToItemsTable)
           .where(eq(collectionsToItemsTable.collectionId, id));
 
-        // Insert new items if any
+        // Create or find items if any
         if (items.length > 0) {
           const validItems = items.filter((item) => item.name.trim() !== "");
 
           if (validItems.length > 0) {
-            // Insert items into itemsTable
-            const insertedItems = await tx
+            // Insert items, ignoring conflicts (duplicates)
+            await tx
               .insert(itemsTable)
               .values(validItems.map((item) => ({ name: item.name })))
-              .returning();
+              .onConflictDoNothing();
+
+            // Fetch all items by name to get their IDs
+            const itemNames = validItems.map((item) => item.name);
+            const itemRecords = await tx.query.itemsTable.findMany({
+              where: (items, { inArray }) => inArray(items.name, itemNames),
+            });
 
             // Create junction table entries to link collection with items
-            const junctionEntries = insertedItems.map((item) => ({
+            const junctionEntries = itemRecords.map((item) => ({
               collectionId: collection.id,
               itemId: item.id,
             }));

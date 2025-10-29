@@ -19,7 +19,7 @@ export const collectionsRelations = relations(collectionsTable, ({ many }) => ({
 // Items
 export const itemsTable = pgTable("items", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  name: varchar({ length: 255 }).notNull(),
+  name: varchar({ length: 255 }).notNull().unique(),
 });
 
 export const itemsRelations = relations(itemsTable, ({ many }) => ({
@@ -72,16 +72,24 @@ export const insertCollectionSchema = createInsertSchema(collectionsTable, {
   items: z
     .array(
       z.object({
-        name: z.string().min(1, "Item name is required"),
+        name: z.string().refine((val) => val.trim().length > 0, {
+          message: "Item name is required",
+        }),
       })
     )
-    .optional()
     .default([]),
 });
 
 export const insertItemSchema = createInsertSchema(itemsTable, {
   name: z
     .string()
-    .min(5, "Item name must be at least 5 characters.")
-    .max(32, "Item name must be at most 32 characters."),
+    .refine((val) => val.trim().length > 0, {
+      message: "Item name is required",
+    })
+    .refine((val) => val.trim().length >= 5, {
+      message: "Item name must be at least 5 characters.",
+    })
+    .refine((val) => val.trim().length <= 32, {
+      message: "Item name must be at most 32 characters.",
+    }),
 });

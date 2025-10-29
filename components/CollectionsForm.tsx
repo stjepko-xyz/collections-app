@@ -12,9 +12,11 @@ import {
   FieldDescription,
   FieldGroup,
 } from "@/components/ui/field";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const CollectionsForm = ({ formId, data }: { formId: string; data?: any }) => {
   const router = useRouter();
+  const [error, setError] = useState<string | null>(null);
   const [existingItems, setExistingItems] = useState<
     Array<{ id: number; name: string }>
   >([]);
@@ -44,13 +46,15 @@ const CollectionsForm = ({ formId, data }: { formId: string; data?: any }) => {
 
   const onSubmit = async (formData: z.infer<typeof insertCollectionSchema>) => {
     console.log(formData);
+    setError(null);
+
     if (data) {
       const result = await updateCollection(data.id, formData);
 
       if (result.success) {
         router.push(`/collections/${data.id}`);
       } else {
-        // Show error message
+        setError(result.error || "Failed to update collection");
       }
     } else {
       const result = await createCollection(formData);
@@ -58,7 +62,7 @@ const CollectionsForm = ({ formId, data }: { formId: string; data?: any }) => {
       if (result.success) {
         router.push("/collections");
       } else {
-        // Show error message
+        setError(result.error || "Failed to create collection");
       }
     }
   };
@@ -70,6 +74,11 @@ const CollectionsForm = ({ formId, data }: { formId: string; data?: any }) => {
         <FieldDescription>
           Create a new collection to organize your items.
         </FieldDescription>
+        {error && (
+          <Alert variant="destructive">
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        )}
         <FieldGroup>
           <Form.InputField name="name" placeholder={"Fill in your name"} />
           <Form.TextareaField
