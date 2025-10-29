@@ -79,4 +79,9 @@ export const insertCollectionSchema = createInsertSchema(collectionsTable, {
     .default([]),
 });
 
-export const insertItemSchema = createInsertSchema(itemsTable);
+export const insertItemSchema = createInsertSchema(itemsTable, {
+  name: z
+    .string()
+    .min(5, "Item name must be at least 5 characters.")
+    .max(32, "Item name must be at most 32 characters."),
+});

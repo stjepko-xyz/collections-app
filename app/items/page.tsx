@@ -11,7 +11,7 @@ export default async function Page() {
     <main className="">
       <div className="header flex justify-end">
         <Button variant={"outline"} asChild>
-          <Link href="/collections/new">New</Link>
+          <Link href="/items/new">New</Link>
         </Button>
       </div>
       <div className="space-y-1">
