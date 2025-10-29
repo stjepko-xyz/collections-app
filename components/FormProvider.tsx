@@ -31,7 +31,13 @@ import {
   InputGroupButton,
 } from "@/components/ui/input-group";
 import { Button } from "@/components/ui/button";
-import { XIcon } from "lucide-react";
+import { XIcon, MoreHorizontal, ChevronDownIcon } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const FormContext = createContext(null);
 
@@ -190,7 +196,7 @@ const CheckboxField = ({ name, options }) => {
   );
 };
 
-const ArrayField = ({ name, placeholder, description }) => {
+const ArrayField = ({ name, placeholder, description, existingOptions }) => {
   const { form } = useFormContext();
   const { fields, append, remove } = useFieldArray({
     control: form.control,
@@ -218,8 +224,33 @@ const ArrayField = ({ name, placeholder, description }) => {
                       type="text"
                       autoComplete="off"
                     />
-                    {fields.length > 1 && (
-                      <InputGroupAddon align="inline-end">
+                    <InputGroupAddon align="inline-end">
+                      {existingOptions && existingOptions.length > 0 && (
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <InputGroupButton
+                              variant="ghost"
+                              className="!pr-1.5 text-xs"
+                            >
+                              Select items
+                              <ChevronDownIcon className="size-3" />
+                            </InputGroupButton>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            {existingOptions.map((option) => (
+                              <DropdownMenuItem
+                                key={option.id}
+                                onSelect={() => {
+                                  controllerField.onChange(option.name);
+                                }}
+                              >
+                                {option.name}
+                              </DropdownMenuItem>
+                            ))}
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      )}
+                      {fields.length > 1 && (
                         <InputGroupButton
                           type="button"
                           variant="ghost"
@@ -229,8 +260,8 @@ const ArrayField = ({ name, placeholder, description }) => {
                         >
                           <XIcon />
                         </InputGroupButton>
-                      </InputGroupAddon>
-                    )}
+                      )}
+                    </InputGroupAddon>
                   </InputGroup>
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />

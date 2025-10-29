@@ -2,8 +2,10 @@
 import { z } from "zod";
 import Form from "@/components/FormProvider";
 import { createCollection, updateCollection } from "@/actions/collections";
+import { getItems } from "@/actions/items";
 import { insertCollectionSchema } from "@/db/schema";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import {
   FieldSet,
   FieldLegend,
@@ -13,6 +15,20 @@ import {
 
 const CollectionsForm = ({ formId, data }: { formId: string; data?: any }) => {
   const router = useRouter();
+  const [existingItems, setExistingItems] = useState<
+    Array<{ id: number; name: string }>
+  >([]);
+
+  useEffect(() => {
+    const fetchItems = async () => {
+      const result = await getItems();
+      if (result.success && result.data) {
+        setExistingItems(result.data);
+      }
+    };
+    fetchItems();
+  }, []);
+
   const fields = {
     name: data?.name || "",
     description: data?.description || "",
@@ -88,6 +104,7 @@ const CollectionsForm = ({ formId, data }: { formId: string; data?: any }) => {
             name="items"
             placeholder="Enter item name"
             description="Add items to your collection (optional)"
+            existingOptions={existingItems}
           />
         </FieldGroup>
       </FieldSet>

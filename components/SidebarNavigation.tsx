@@ -1,3 +1,4 @@
+"use client";
 import {
   Calendar,
   Home,
@@ -21,12 +22,17 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { Collection } from "@/actions/collections";
+import { usePathname } from "next/navigation";
 
 interface SidebarNavigationProps {
   collections: Collection[];
 }
 
 export function SidebarNavigation({ collections }: SidebarNavigationProps) {
+  const pathname = usePathname();
+  const url = pathname || "/";
+
+  console.log(url);
   return (
     <Sidebar>
       <SidebarContent>
@@ -35,7 +41,7 @@ export function SidebarNavigation({ collections }: SidebarNavigationProps) {
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild>
+                <SidebarMenuButton isActive={url === "/"} asChild>
                   <Link href="/">
                     <Home />
                     <span>Home</span>
@@ -43,7 +49,10 @@ export function SidebarNavigation({ collections }: SidebarNavigationProps) {
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild>
+                <SidebarMenuButton
+                  isActive={url.includes("/collections")}
+                  asChild
+                >
                   <Link href="/collections">
                     <FolderOpen />
                     <span>Collections</span>
@@ -51,7 +60,7 @@ export function SidebarNavigation({ collections }: SidebarNavigationProps) {
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild>
+                <SidebarMenuButton isActive={url.includes("/items")} asChild>
                   <Link href="/items">
                     <StickyNote />
                     <span>Items</span>
