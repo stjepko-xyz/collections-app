@@ -5,6 +5,8 @@ import {
   Search,
   Settings,
   FolderOpen,
+  Cuboid,
+  StickyNote,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -44,15 +46,15 @@ export function SidebarNavigation({ collections }: SidebarNavigationProps) {
                 <SidebarMenuButton asChild>
                   <Link href="/collections">
                     <FolderOpen />
-                    <span>All Collections</span>
+                    <span>Collections</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
                   <Link href="/items">
-                    <FolderOpen />
-                    <span>All Items</span>
+                    <StickyNote />
+                    <span>Items</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
