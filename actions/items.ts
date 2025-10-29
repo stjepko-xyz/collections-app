@@ -44,3 +44,33 @@ export const getItemById = async (id) => {
     return { success: false, error: "Failed to fetch item." };
   }
 };
+
+export const updateItem = async (id, data) => {
+  try {
+    const [item] = await db
+      .update(itemsTable)
+      .set(data)
+      .where(eq(itemsTable.id, id))
+      .returning();
+
+    revalidatePath("/items");
+
+    return { success: true, data: item };
+  } catch (error) {
+    console.error("Error updating item:", error);
+    return { success: false, error: "Failed to update item." };
+  }
+};
+
+export const deleteItem = async (id) => {
+  try {
+    await db.delete(itemsTable).where(eq(itemsTable.id, id));
+
+    revalidatePath("/items");
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error deleting item:", error);
+    return { success: false, error: "Failed to delete item." };
+  }
+};

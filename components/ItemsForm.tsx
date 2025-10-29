@@ -1,8 +1,7 @@
 "use client";
 import { z } from "zod";
 import Form from "@/components/FormProvider";
-import { createCollection, updateCollection } from "@/actions/collections";
-import { createItem } from "@/actions/items";
+import { createItem, updateItem } from "@/actions/items";
 import { insertItemSchema } from "@/db/schema";
 import { useRouter } from "next/navigation";
 import {
@@ -23,7 +22,7 @@ const ItemsForm = ({ formId, data }: { formId: string; data?: any }) => {
   const onSubmit = async (formData: z.infer<typeof insertItemSchema>) => {
     console.log(formData);
     if (data) {
-      const result = await updateCollection(data.id, formData);
+      const result = await updateItem(data.id, formData);
 
       if (result.success) {
         router.push(`/items/${data.id}`);
