@@ -18,8 +18,13 @@ const CollectionsForm = ({ formId, data }: { formId: string; data?: any }) => {
     description: data?.description || "",
     category: data?.category || "",
     tags: data?.tags || [],
-    items: data?.items || [],
+    items:
+      data?.collectionsToItems?.map((object: any) => ({
+        name: object.item.name,
+      })) || [],
   };
+
+  console.log(data);
 
   const onSubmit = async (formData: z.infer<typeof insertCollectionSchema>) => {
     console.log(formData);

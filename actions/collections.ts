@@ -1,7 +1,11 @@
 "use server";
 
 import { db } from "@/db/drizzle";
-import { collectionsTable, itemsTable } from "@/db/schema";
+import {
+  collectionsTable,
+  itemsTable,
+  collectionsToItemsTable,
+} from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
@@ -20,21 +24,30 @@ export async function createCollection(
     const { items, ...collectionData } = data;
 
     const result = await db.transaction(async (tx) => {
+      // 1. Create the collection
       const [collection] = await tx
         .insert(collectionsTable)
         .values(collectionData)
         .returning();
 
+      // 2. Create items and link them to the collection
       if (items && items.length > 0) {
-        const itemsWithCollectionId = items
-          .filter((item) => item.name.trim() !== "")
-          .map((item) => ({
-            name: item.name,
+        const validItems = items.filter((item) => item.name.trim() !== "");
+
+        if (validItems.length > 0) {
+          // Insert items into itemsTable
+          const insertedItems = await tx
+            .insert(itemsTable)
+            .values(validItems.map((item) => ({ name: item.name })))
+            .returning();
+
+          // Create junction table entries to link collection with items
+          const junctionEntries = insertedItems.map((item) => ({
             collectionId: collection.id,
+            itemId: item.id,
           }));
 
-        if (itemsWithCollectionId.length > 0) {
-          await tx.insert(itemsTable).values(itemsWithCollectionId);
+          await tx.insert(collectionsToItemsTable).values(junctionEntries);
         }
       }
 
@@ -57,7 +70,11 @@ export async function getCollections() {
   try {
     const collections = await db.query.collectionsTable.findMany({
       with: {
-        items: true,
+        collectionsToItems: {
+          with: {
+            item: true,
+          },
+        },
       },
     });
     return { success: true, data: collections };
@@ -75,7 +92,11 @@ export async function getCollectionById(id: number) {
     const collection = await db.query.collectionsTable.findFirst({
       where: eq(collectionsTable.id, id),
       with: {
-        items: true,
+        collectionsToItems: {
+          with: {
+            item: true,
+          },
+        },
       },
     });
 
@@ -114,20 +135,29 @@ export async function updateCollection(
 
       // If items are provided, replace all existing items
       if (items !== undefined) {
-        // Delete existing items
-        await tx.delete(itemsTable).where(eq(itemsTable.collectionId, id));
+        // Delete existing junction table entries for this collection
+        await tx
+          .delete(collectionsToItemsTable)
+          .where(eq(collectionsToItemsTable.collectionId, id));
 
         // Insert new items if any
         if (items.length > 0) {
-          const itemsWithCollectionId = items
-            .filter((item) => item.name.trim() !== "")
-            .map((item) => ({
-              name: item.name,
+          const validItems = items.filter((item) => item.name.trim() !== "");
+
+          if (validItems.length > 0) {
+            // Insert items into itemsTable
+            const insertedItems = await tx
+              .insert(itemsTable)
+              .values(validItems.map((item) => ({ name: item.name })))
+              .returning();
+
+            // Create junction table entries to link collection with items
+            const junctionEntries = insertedItems.map((item) => ({
               collectionId: collection.id,
+              itemId: item.id,
             }));
 
-          if (itemsWithCollectionId.length > 0) {
-            await tx.insert(itemsTable).values(itemsWithCollectionId);
+            await tx.insert(collectionsToItemsTable).values(junctionEntries);
           }
         }
       }
