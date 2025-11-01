@@ -8,6 +8,8 @@ import {
   FolderOpen,
   Cuboid,
   StickyNote,
+  Folders,
+  Folder,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -54,7 +56,7 @@ export function SidebarNavigation({ collections }: SidebarNavigationProps) {
                   asChild
                 >
                   <Link href="/collections">
-                    <FolderOpen />
+                    <Folders />
                     <span>Collections</span>
                   </Link>
                 </SidebarMenuButton>
@@ -62,7 +64,7 @@ export function SidebarNavigation({ collections }: SidebarNavigationProps) {
               <SidebarMenuItem>
                 <SidebarMenuButton isActive={url.includes("/items")} asChild>
                   <Link href="/items">
-                    <StickyNote />
+                    <Folders />
                     <span>Items</span>
                   </Link>
                 </SidebarMenuButton>
@@ -79,7 +81,7 @@ export function SidebarNavigation({ collections }: SidebarNavigationProps) {
                 <SidebarMenuItem key={collection.id}>
                   <SidebarMenuButton asChild>
                     <Link href={`/collections/${collection.id}`}>
-                      <FolderOpen />
+                      <Folder />
                       <span>{collection.name}</span>
                     </Link>
                   </SidebarMenuButton>
