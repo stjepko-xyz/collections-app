@@ -42,8 +42,6 @@ const CollectionsForm = ({ formId, data }: { formId: string; data?: any }) => {
       })) || [],
   };
 
-  console.log(data);
-
   const onSubmit = async (formData: z.infer<typeof insertCollectionSchema>) => {
     console.log(formData);
     setError(null);

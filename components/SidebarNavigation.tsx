@@ -42,14 +42,14 @@ export function SidebarNavigation({ collections }: SidebarNavigationProps) {
           <SidebarGroupLabel>Navigation</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              <SidebarMenuItem>
+              {/* <SidebarMenuItem>
                 <SidebarMenuButton isActive={url === "/"} asChild>
                   <Link href="/">
                     <Home />
                     <span>Home</span>
                   </Link>
                 </SidebarMenuButton>
-              </SidebarMenuItem>
+              </SidebarMenuItem> */}
               <SidebarMenuItem>
                 <SidebarMenuButton
                   isActive={url.includes("/collections")}

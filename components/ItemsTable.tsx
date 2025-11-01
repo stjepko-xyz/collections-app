@@ -64,7 +64,7 @@ export function ItemsTable<TData, TValue>({
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
                     {cell?.column?.id === "name" ? (
-                      <Link href={`/items/${row?.original?.id}`}>
+                      <Link href={`/items/${(row?.original as any)?.id}`}>
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()

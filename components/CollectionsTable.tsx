@@ -70,6 +70,8 @@ export function CollectionsTable<TData, TValue>({
                           cell.getContext()
                         )}
                       </Link>
+                    ) : cell?.column?.id === "items" ? (
+                      <>{row?.original?.collectionsToItems?.length || 0}</>
                     ) : (
                       flexRender(cell.column.columnDef.cell, cell.getContext())
                     )}

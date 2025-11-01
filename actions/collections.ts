@@ -35,7 +35,6 @@ export async function createCollection(
         const validItems = items.filter((item) => item.name.trim() !== "");
 
         if (validItems.length > 0) {
-          // Insert items, ignoring conflicts (duplicates)
           await tx
             .insert(itemsTable)
             .values(validItems.map((item) => ({ name: item.name })))
@@ -60,7 +59,6 @@ export async function createCollection(
       return collection;
     });
 
-    // Revalidate the collections page to show the new collection
     revalidatePath("/collections");
     return { success: true, data: result };
   } catch (error) {
@@ -177,7 +175,6 @@ export async function updateCollection(
       return collection;
     });
 
-    // Revalidate relevant pages
     revalidatePath("/collections");
     revalidatePath(`/collections/${id}`);
 
@@ -195,7 +192,6 @@ export async function deleteCollection(id: number) {
   try {
     await db.delete(collectionsTable).where(eq(collectionsTable.id, id));
 
-    // Revalidate the collections page
     revalidatePath("/collections");
 
     return { success: true };

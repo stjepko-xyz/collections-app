@@ -31,7 +31,10 @@ export default async function Page({ params }) {
           <p>{description}</p>
         </div>
 
-        <ItemsTable data={items} columns={columns} />
+        <div className="flex flex-col gap-2">
+          <p className="text-muted-foreground">Items</p>
+          <ItemsTable data={items} columns={columns} />
+        </div>
       </div>
     </main>
   );
