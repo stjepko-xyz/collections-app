@@ -6,10 +6,21 @@ Easy to use application for creating your own collection data with items
 - Create items
 - Add any item to collections
 - API endpoints
+- **Easy to extend with new features**
+
+## Preview
 
 <img width="1502" height="814" alt="Screenshot 2025-11-02 at 21 54 16" src="https://github.com/user-attachments/assets/bdb2ab89-b7f2-456d-b0e8-e6d679621643" />
 
-  
+## Setup
+
+1. clone
+2. yarn install
+3. create a new local postgres database
+4. update DATABASE_URL in .env with your database
+5. yarn db:generate
+6. yarn db:migrate
+7. yarn dev
 
 
 
