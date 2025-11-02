@@ -17,10 +17,10 @@ export default async function Home() {
             strokeWidth={1}
             width={32}
             height={32}
-            className="text-violet-500"
+            className="text-primary"
           />
           <div>
-            <h1 className="text-2xl font-semibold">My Collections</h1>
+            <h1 className="text-xl font-semibold">My Collections</h1>
             <p className="text-muted-foreground">
               Manage your collections here
             </p>

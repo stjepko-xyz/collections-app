@@ -68,10 +68,6 @@ const CollectionsForm = ({ formId, data }: { formId: string; data?: any }) => {
   return (
     <Form value={{ formId, fields, onSubmit, schema: insertCollectionSchema }}>
       <FieldSet>
-        <FieldLegend>New collection</FieldLegend>
-        <FieldDescription>
-          Create a new collection to organize your items.
-        </FieldDescription>
         {error && (
           <Alert variant="destructive">
             <AlertDescription>{error}</AlertDescription>

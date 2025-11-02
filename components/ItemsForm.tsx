@@ -49,10 +49,6 @@ const ItemsForm = ({ formId, data }: { formId: string; data?: any }) => {
   return (
     <Form value={{ formId, fields, onSubmit, schema: insertItemSchema }}>
       <FieldSet>
-        <FieldLegend>New item</FieldLegend>
-        <FieldDescription>
-          Create a new item to add to your collection.
-        </FieldDescription>
         {error && (
           <Alert variant="destructive">
             <AlertDescription>{error}</AlertDescription>

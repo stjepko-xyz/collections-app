@@ -53,7 +53,9 @@ export function SidebarNavigation({ collections }: SidebarNavigationProps) {
               </SidebarMenuItem> */}
               <SidebarMenuItem>
                 <SidebarMenuButton
-                  isActive={url.includes("/collections")}
+                  isActive={
+                    url === "/collections" || url === "/collections/new"
+                  }
                   asChild
                 >
                   <Link href="/collections">
@@ -63,7 +65,11 @@ export function SidebarNavigation({ collections }: SidebarNavigationProps) {
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton isActive={url.includes("/items")} asChild>
+                <SidebarMenuButton
+                  isActive={url.includes("/items")}
+                  className="data-[active=true]:bg-violet-500 data-[active=true]:text-white"
+                  asChild
+                >
                   <Link href="/items">
                     <Boxes />
                     <span>Items</span>
@@ -80,7 +86,10 @@ export function SidebarNavigation({ collections }: SidebarNavigationProps) {
             <SidebarMenu>
               {collections.map((collection) => (
                 <SidebarMenuItem key={collection.id}>
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton
+                    isActive={url.includes(`/collections/${collection.id}`)}
+                    asChild
+                  >
                     <Link href={`/collections/${collection.id}`}>
                       <Folder />
                       <span>{collection.name}</span>

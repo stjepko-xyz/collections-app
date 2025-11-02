@@ -19,9 +19,14 @@ export default async function Page({ params }) {
         </Button>
       </div>
       <div className="flex items-center gap-4">
-        <Box strokeWidth={1} width={48} height={48} />
+        <Box
+          strokeWidth={1}
+          width={32}
+          height={32}
+          className="text-violet-500"
+        />
         <div>
-          <h1 className="text-3xl font-semibold">{name}</h1>
+          <h1 className="text-xl font-semibold">{name}</h1>
         </div>
       </div>
     </main>

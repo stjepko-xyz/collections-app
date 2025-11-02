@@ -18,10 +18,10 @@ export default async function Page() {
             strokeWidth={1}
             width={32}
             height={32}
-            className="text-red-500"
+            className="text-violet-500"
           />
           <div>
-            <h1 className="text-2xl font-semibold">My Items</h1>
+            <h1 className="text-xl font-semibold">My Items</h1>
             <p className="text-muted-foreground">Manage your items here</p>
           </div>
         </div>

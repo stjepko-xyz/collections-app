@@ -4,6 +4,7 @@ import "./globals.css";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { SidebarNavigation } from "@/components/SidebarNavigation";
 import { getCollections } from "@/actions/collections";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,18 +30,25 @@ export default async function RootLayout({
   const collections = collectionsResult.success ? collectionsResult.data : [];
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <SidebarProvider>
-          <SidebarNavigation collections={collections} />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <SidebarProvider>
+            <SidebarNavigation collections={collections} />
 
-          <div className="w-full min-h-screen flex flex-col">
-            <SidebarTrigger />
-            <div className="py-4 px-8 flex-1">{children}</div>
-          </div>
-        </SidebarProvider>
+            <div className="w-full min-h-screen flex flex-col">
+              <SidebarTrigger />
+              <div className="py-4 px-8 flex-1">{children}</div>
+            </div>
+          </SidebarProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
