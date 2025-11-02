@@ -10,6 +10,7 @@ import {
   StickyNote,
   Folders,
   Folder,
+  Boxes,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -64,7 +65,7 @@ export function SidebarNavigation({ collections }: SidebarNavigationProps) {
               <SidebarMenuItem>
                 <SidebarMenuButton isActive={url.includes("/items")} asChild>
                   <Link href="/items">
-                    <Folders />
+                    <Boxes />
                     <span>Items</span>
                   </Link>
                 </SidebarMenuButton>

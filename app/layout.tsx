@@ -35,8 +35,11 @@ export default async function RootLayout({
       >
         <SidebarProvider>
           <SidebarNavigation collections={collections} />
-          <SidebarTrigger />
-          <div className="p-8 pr-16 w-full">{children}</div>
+
+          <div className="w-full min-h-screen flex flex-col">
+            <SidebarTrigger />
+            <div className="py-4 px-8 flex-1">{children}</div>
+          </div>
         </SidebarProvider>
       </body>
     </html>

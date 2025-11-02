@@ -2,6 +2,7 @@ import { getCollectionById } from "@/actions/collections";
 import { columns } from "@/components/ItemsColumns";
 import { ItemsTable } from "@/components/ItemsTable";
 import { Button } from "@/components/ui/button";
+import { Folder } from "lucide-react";
 import Link from "next/link";
 
 export default async function Page({ params }) {
@@ -21,11 +22,14 @@ export default async function Page({ params }) {
           <Link href={`/collections/${id}/edit`}>Edit</Link>
         </Button>
       </div>
-      <div className="space-y-6">
+      <div className="flex items-center gap-4">
+        <Folder strokeWidth={1} width={48} height={48} />
         <div>
-          <p className="text-muted-foreground">Name</p>
-          <h2>{name}</h2>
+          <h1 className="text-3xl font-semibold">{name}</h1>
         </div>
+      </div>
+
+      <div className="space-y-6">
         <div>
           <p className="text-muted-foreground">Description</p>
           <p>{description}</p>
