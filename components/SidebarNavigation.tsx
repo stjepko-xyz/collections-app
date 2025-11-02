@@ -1,17 +1,5 @@
 "use client";
-import {
-  Calendar,
-  Home,
-  Inbox,
-  Search,
-  Settings,
-  FolderOpen,
-  Cuboid,
-  StickyNote,
-  Folders,
-  Folder,
-  Boxes,
-} from "lucide-react";
+import { Folders, Folder, Boxes, Code } from "lucide-react";
 import Link from "next/link";
 
 import {
@@ -43,14 +31,6 @@ export function SidebarNavigation({ collections }: SidebarNavigationProps) {
           <SidebarGroupLabel>Navigation</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {/* <SidebarMenuItem>
-                <SidebarMenuButton isActive={url === "/"} asChild>
-                  <Link href="/">
-                    <Home />
-                    <span>Home</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem> */}
               <SidebarMenuItem>
                 <SidebarMenuButton
                   isActive={
@@ -97,6 +77,30 @@ export function SidebarNavigation({ collections }: SidebarNavigationProps) {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        <SidebarGroup>
+          <SidebarGroupLabel>API endpoints</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                  <Link href={`api/collections`}>
+                    <Code />
+                    <span>GET collections</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                  <Link href={`api/items`}>
+                    <Code />
+                    <span>GET items</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

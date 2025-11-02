@@ -189,5 +189,5 @@ a, button {
 }
 
 table a {
-  text-decoration: underline;
+  border-bottom: solid 1px;
 }
