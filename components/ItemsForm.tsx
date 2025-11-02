@@ -12,6 +12,7 @@ import {
   FieldGroup,
 } from "@/components/ui/field";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { toast } from "sonner";
 
 const ItemsForm = ({ formId, data }: { formId: string; data?: any }) => {
   const router = useRouter();
@@ -31,6 +32,9 @@ const ItemsForm = ({ formId, data }: { formId: string; data?: any }) => {
       const result = await updateItem(data.id, formData);
 
       if (result.success) {
+        toast.success("Item updated successfully", {
+          description: `${formData.name} has been updated`,
+        });
         router.push(`/items/${data.id}`);
       } else {
         setError(result.error || "Failed to update item");
@@ -39,6 +43,9 @@ const ItemsForm = ({ formId, data }: { formId: string; data?: any }) => {
       const result = await createItem(formData);
 
       if (result.success) {
+        toast.success("Item created successfully", {
+          description: `${formData.name} has been added to your items`,
+        });
         router.push("/items");
       } else {
         setError(result.error || "Failed to create item");

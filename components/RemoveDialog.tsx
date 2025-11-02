@@ -14,6 +14,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
+import { toast } from "sonner";
 
 interface RemoveDialogProps {
   itemId: number;
@@ -46,6 +47,12 @@ const RemoveDialog = ({
     const result = await onDelete(itemId);
 
     if (result.success) {
+      toast(
+        `${itemName.charAt(0).toUpperCase() + itemName.slice(1)} deleted successfully`,
+        {
+          description: `Your ${itemName} has been permanently removed`,
+        }
+      );
       if (redirectPath) {
         router.push(redirectPath);
       }

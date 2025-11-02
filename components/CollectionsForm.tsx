@@ -13,6 +13,7 @@ import {
   FieldGroup,
 } from "@/components/ui/field";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { toast } from "sonner";
 
 const CollectionsForm = ({ formId, data }: { formId: string; data?: any }) => {
   const router = useRouter();
@@ -50,6 +51,9 @@ const CollectionsForm = ({ formId, data }: { formId: string; data?: any }) => {
       const result = await updateCollection(data.id, formData);
 
       if (result.success) {
+        toast.success("Collection updated successfully", {
+          description: `${formData.name} has been updated`,
+        });
         router.push(`/collections/${data.id}`);
       } else {
         setError(result.error || "Failed to update collection");
@@ -58,6 +62,9 @@ const CollectionsForm = ({ formId, data }: { formId: string; data?: any }) => {
       const result = await createCollection(formData);
 
       if (result.success) {
+        toast.success("Collection created successfully", {
+          description: `${formData.name} has been added to your collections`,
+        });
         router.push("/collections");
       } else {
         setError(result.error || "Failed to create collection");
