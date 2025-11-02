@@ -38,7 +38,7 @@ export default async function Page({ params }) {
         </div>
       </div>
       <Card className="p-2 flex-1 overflow-hidden gap-2">
-        <p className="text-gray-700 text-sm">Items</p>
+        <p className="text-muted-foreground text-sm">Items</p>
         <ItemsTable data={items} columns={columns} />
       </Card>
     </main>

@@ -16,9 +16,9 @@ export type NewCollection = typeof collectionsTable.$inferInsert;
 /**
  * Create a new collection
  */
-export async function createCollection(
+export const createCollection = async (
   data: NewCollection & { items?: any[] }
-) {
+) => {
   console.log("Creating collection with data:", data);
   try {
     const { items, ...collectionData } = data;
@@ -65,12 +65,12 @@ export async function createCollection(
     console.error("Error creating collection:", error);
     return { success: false, error: "Failed to create collection" };
   }
-}
+};
 
 /**
  * Get all collections
  */
-export async function getCollections() {
+export const getCollections = async () => {
   try {
     const collections = await db.query.collectionsTable.findMany({
       with: {
@@ -86,12 +86,12 @@ export async function getCollections() {
     console.error("Error fetching collections:", error);
     return { success: false, error: "Failed to fetch collections" };
   }
-}
+};
 
 /**
  * Get a single collection by ID
  */
-export async function getCollectionById(id: number) {
+export const getCollectionById = async (id: number) => {
   try {
     const collection = await db.query.collectionsTable.findFirst({
       where: eq(collectionsTable.id, id),
@@ -113,15 +113,15 @@ export async function getCollectionById(id: number) {
     console.error("Error fetching collection:", error);
     return { success: false, error: "Failed to fetch collection" };
   }
-}
+};
 
 /**
  * Update a collection
  */
-export async function updateCollection(
+export const updateCollection = async (
   id: number,
   data: Partial<NewCollection> & { items?: any[] }
-) {
+) => {
   try {
     const { items, ...collectionData } = data;
 
@@ -183,12 +183,12 @@ export async function updateCollection(
     console.error("Error updating collection:", error);
     return { success: false, error: "Failed to update collection" };
   }
-}
+};
 
 /**
  * Delete a collection
  */
-export async function deleteCollection(id: number) {
+export const deleteCollection = async (id: number) => {
   try {
     await db.delete(collectionsTable).where(eq(collectionsTable.id, id));
 
@@ -199,4 +199,4 @@ export async function deleteCollection(id: number) {
     console.error("Error deleting collection:", error);
     return { success: false, error: "Failed to delete collection" };
   }
-}
+};

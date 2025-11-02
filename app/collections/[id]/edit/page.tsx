@@ -1,11 +1,8 @@
 import { getCollectionById, deleteCollection } from "@/actions/collections";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import CollectionsForm from "@/components/CollectionsForm";
 import RemoveDialog from "@/components/RemoveDialog";
-import { Folder } from "lucide-react";
-import { Separator } from "@radix-ui/react-separator";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const { id: paramId } = params;

@@ -3,7 +3,7 @@ import { columns } from "@/components/CollectionsColumns";
 import { CollectionsTable } from "@/components/CollectionsTable";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Boxes, Folders } from "lucide-react";
+import { Folders } from "lucide-react";
 import Link from "next/link";
 
 export default async function Home() {

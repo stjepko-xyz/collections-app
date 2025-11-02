@@ -5,7 +5,6 @@ import { columns } from "@/components/ItemsColumns";
 import { ItemsTable } from "@/components/ItemsTable";
 import { Boxes } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 
 export default async function Page() {
   const items = await getItems();

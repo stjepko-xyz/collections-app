@@ -1,6 +1,6 @@
 import { getItemById } from "@/actions/items";
 import { Button } from "@/components/ui/button";
-import { Box, Folder } from "lucide-react";
+import { Box } from "lucide-react";
 import Link from "next/link";
 
 export default async function Page({ params }) {
