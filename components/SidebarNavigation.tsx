@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/sidebar";
 import { Collection } from "@/actions/collections";
 import { usePathname } from "next/navigation";
+import { EndpointDialog } from "./EndpointDialog";
 
 interface SidebarNavigationProps {
   collections: Collection[];
@@ -23,7 +24,6 @@ export function SidebarNavigation({ collections }: SidebarNavigationProps) {
   const pathname = usePathname();
   const url = pathname || "/";
 
-  console.log(url);
   return (
     <Sidebar>
       <SidebarContent>
@@ -86,20 +86,24 @@ export function SidebarNavigation({ collections }: SidebarNavigationProps) {
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild>
-                  <Link href={`api/collections`}>
+                <EndpointDialog
+                  endpoint={`${process.env.NEXT_PUBLIC_DOMAIN}/api/collections`}
+                >
+                  <SidebarMenuButton>
                     <Code />
                     <span>GET collections</span>
-                  </Link>
-                </SidebarMenuButton>
+                  </SidebarMenuButton>
+                </EndpointDialog>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild>
-                  <Link href={`api/items`}>
+                <EndpointDialog
+                  endpoint={`${process.env.NEXT_PUBLIC_DOMAIN}/api/items`}
+                >
+                  <SidebarMenuButton>
                     <Code />
                     <span>GET items</span>
-                  </Link>
-                </SidebarMenuButton>
+                  </SidebarMenuButton>
+                </EndpointDialog>
               </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>

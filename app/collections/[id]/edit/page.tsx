@@ -7,7 +7,6 @@ import RemoveDialog from "@/components/RemoveDialog";
 export default async function Page({ params }: { params: { id: string } }) {
   const { id: paramId } = params;
   const id = parseInt(paramId, 10);
-  console.log(id);
   const collection = await getCollectionById(id);
 
   return (

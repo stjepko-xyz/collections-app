@@ -5,7 +5,6 @@ import Link from "next/link";
 
 export default async function Page({ params }) {
   const { id: paramId } = params;
-  console.log(paramId);
   const collection = await getItemById(paramId);
   const { id, name } = collection.data;
   return (

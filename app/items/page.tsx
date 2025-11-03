@@ -14,9 +14,7 @@ const ItemsData = async () => {
   return <ItemsTable columns={columns} data={items?.data} />;
 };
 
-export default async function Page() {
-  const items = await getItems();
-  console.log(items);
+export default function Page() {
   return (
     <main className="flex flex-col gap-4 h-full">
       <div className="flex justify-between">

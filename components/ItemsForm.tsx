@@ -22,10 +22,7 @@ const ItemsForm = ({ formId, data }: { formId: string; data?: any }) => {
     name: data?.name || "",
   };
 
-  console.log(data);
-
   const onSubmit = async (formData: z.infer<typeof insertItemSchema>) => {
-    console.log(formData);
     setError(null);
 
     if (data) {
