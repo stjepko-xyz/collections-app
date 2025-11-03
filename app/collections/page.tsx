@@ -5,10 +5,21 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Folders } from "lucide-react";
 import Link from "next/link";
+import { Suspense } from "react";
+import LoadingSpinner from "@/components/Loading";
 
-export default async function Home() {
+const CollectionsData = async () => {
   const collections = await getCollections();
 
+  return (
+    <CollectionsTable
+      columns={columns}
+      data={(collections?.data as any) || []}
+    />
+  );
+};
+
+export default function Home() {
   return (
     <main className="flex flex-col gap-4 h-full">
       <div className="flex justify-between">
@@ -33,7 +44,9 @@ export default async function Home() {
         </div>
       </div>
       <Card className="p-2 flex-1 overflow-hidden">
-        <CollectionsTable columns={columns} data={collections?.data} />
+        <Suspense fallback={<LoadingSpinner />}>
+          <CollectionsData />
+        </Suspense>
       </Card>
     </main>
   );

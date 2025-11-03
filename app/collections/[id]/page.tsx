@@ -10,7 +10,6 @@ export default async function Page({ params }) {
   const { id: paramId } = params;
   const collection = await getCollectionById(paramId);
   const { id, name, description, collectionsToItems } = collection.data;
-  console.log(collectionsToItems);
   const items = collectionsToItems.map((cti) => cti.item);
 
   return (

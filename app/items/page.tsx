@@ -5,6 +5,14 @@ import { columns } from "@/components/ItemsColumns";
 import { ItemsTable } from "@/components/ItemsTable";
 import { Boxes } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import { Suspense } from "react";
+import LoadingSpinner from "@/components/Loading";
+
+const ItemsData = async () => {
+  const items = await getItems();
+
+  return <ItemsTable columns={columns} data={items?.data} />;
+};
 
 export default async function Page() {
   const items = await getItems();
@@ -31,7 +39,9 @@ export default async function Page() {
         </div>
       </div>
       <Card className="p-2 flex-1 overflow-hidden">
-        <ItemsTable columns={columns} data={items?.data} />
+        <Suspense fallback={<LoadingSpinner />}>
+          <ItemsData />
+        </Suspense>
       </Card>
     </main>
   );
